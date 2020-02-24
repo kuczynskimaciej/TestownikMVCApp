@@ -1,0 +1,32 @@
+﻿@model QuestionModel
+@{
+    ViewData["Title"] = "Testownik";
+}
+
+<body>
+    <h1>
+        @Model.Question
+    </h1>
+    <form asp-controller="Home" asp-action="CheckAnswers" method="post">
+        @{
+            var countOfCorrectAnswers = Model.Answers.Where(x => x.IsCorrect).Count();
+
+            <input type="hidden" asp-for="Question" />
+
+            for (int x = 0; x < Model.Answers.Count; x++)
+            {
+                <input type="hidden" asp-for="@Model.Answers[x].IsCorrect" />
+                <input type="hidden" asp-for="@Model.Answers[x].Answer" />
+                if (countOfCorrectAnswers == 1)
+                {
+                    <input type="radio" asp-for="@Model.Answers[x].SelectedAnswers" value="true" /> @Model.Answers[x].Answer <br />
+                }
+                else
+                {
+                    <input type="checkbox" asp-for="@Model.Answers[x].SelectedAnswers" value="true" /> @Model.Answers[x].Answer <br />
+                }
+            }
+            <input type="submit" value="Wybierz" />
+        }
+    </form>
+</body>

@@ -1,0 +1,49 @@
+﻿@model QuestionModel
+
+@{
+    ViewData["Title"] = "CheckAnswers";
+}
+
+
+<body>
+    <h1>
+        @Model.Question
+    </h1>
+    <form asp-controller="Home" asp-action="Testownik">
+        @{
+            var countOfCorrectAnswers = Model.Answers.Where(x => x.IsCorrect).Count();
+
+            @*<input type="hidden" asp-for="Question" />*@
+
+            for (int x = 0; x < Model.Answers.Count; x++)
+            {
+                @*<input type="hidden" asp-for="@Model.Answers[x].IsCorrect" />
+                    <input type="hidden" asp-for="@Model.Answers[x].Answer" />*@
+                if (countOfCorrectAnswers == 1)
+                {
+                    if (Model.Answers[x].SelectedAnswers && Model.Answers[x].IsCorrect)
+                    {
+                        <input type="radio" asp-for="@Model.Answers[x].SelectedAnswers" value="@Model.Answers[x].SelectedAnswers" /> @Model.Answers[x].Answer <img src="https://onestopit.com.au/wp-content/uploads/2018/02/checked-circle.png" style="width:15px"> <br />
+                    }
+                    else
+                    {
+                        <input type="radio" asp-for="@Model.Answers[x].SelectedAnswers" value="@Model.Answers[x].SelectedAnswers" /> @Model.Answers[x].Answer <img src="https://pluspng.com/img-png/png-wrong-cross-png-small-medium-large-600.png" style="width:15px"> <br />
+                    }
+                }
+                else
+                {
+                    if (Model.Answers[x].SelectedAnswers && Model.Answers[x].IsCorrect)
+                    {
+                        <input type="checkbox" asp-for="@Model.Answers[x].SelectedAnswers" value="@Model.Answers[x].SelectedAnswers" /> @Model.Answers[x].Answer <img src="https://onestopit.com.au/wp-content/uploads/2018/02/checked-circle.png" style="width:15px"> <br />
+                    }
+                    else
+                    {
+                        <input type="checkbox" asp-for="@Model.Answers[x].SelectedAnswers" value="@Model.Answers[x].SelectedAnswers" /> @Model.Answers[x].Answer <img src="https://pluspng.com/img-png/png-wrong-cross-png-small-medium-large-600.png" style="width:15px"> <br />
+                    }
+                }
+            }
+            <input type="submit" value="Następne pytanie" />
+        }
+    </form>
+</body>
+
