@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29215.179
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestownikMVCApp", "TestownikMVCApp.csproj", "{E0D2FA42-E5BF-4556-AE07-6E1C2FE4BFE3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "..\DAL\DAL.csproj", "{82C97EE5-48B4-49DC-8D06-AEE86BA72D63}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E0D2FA42-E5BF-4556-AE07-6E1C2FE4BFE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0D2FA42-E5BF-4556-AE07-6E1C2FE4BFE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0D2FA42-E5BF-4556-AE07-6E1C2FE4BFE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0D2FA42-E5BF-4556-AE07-6E1C2FE4BFE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82C97EE5-48B4-49DC-8D06-AEE86BA72D63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82C97EE5-48B4-49DC-8D06-AEE86BA72D63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82C97EE5-48B4-49DC-8D06-AEE86BA72D63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82C97EE5-48B4-49DC-8D06-AEE86BA72D63}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {23F1F64E-561A-4A34-93C5-162BEEB55A64}
+	EndGlobalSection
+EndGlobal
