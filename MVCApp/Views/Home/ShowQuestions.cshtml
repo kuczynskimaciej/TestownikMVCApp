@@ -1,0 +1,22 @@
+﻿@model List<QuestionModel>
+@{
+    ViewData["Title"] = "ShowQuestions";
+}
+
+<h2>Pytania</h2>
+
+<table>
+
+    @foreach (var questions in Model)
+    {
+        <tr>
+            <th>@questions.Id. @questions.Question</th>
+        </tr>
+        foreach (var answers in questions.Answers)
+        {
+            <tr>
+                <td><li> @answers.Answer</li></td>
+            </tr>
+        }
+    }
+</table>

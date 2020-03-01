@@ -65,17 +65,66 @@ namespace TestownikMVCApp.Controllers
             var countOfQuestions = _context.Questions.Count();
             var indexOfRandomQuestion = rnd.Next(countOfQuestions);
 
-            var Question = _context.Questions
+           
+
+            var question = _context.Questions
                 .Include(x => x.Answers)
-                .Where(y => y.Id == indexOfRandomQuestion+1).ToList().First();
+                .Where(y => y.Id == indexOfRandomQuestion + 1).ToList().First();
 
+            
 
+            var questionModel = new QuestionModel()
+            {
+                Question = question.Question,
+                Answers = question.Answers.Select(x => new AnswerModel()
+                {
+                    Answer = x.Answer,
+                    IsCorrect = x.IsCorrect,
+                    SelectedAnswers = x.SelectedAnswer
+                }).ToList()
+            };
 
-            return View(Question);
+            return View(questionModel);
         }
+        [HttpPost]
         public IActionResult CheckAnswers(QuestionModel model)
         {
+
             return View(model);
+        }
+        public IActionResult AddAnswer()
+        {
+
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddQuestion(DAL.Entities.QuestionEntity model)
+        {
+            _context.Questions.Add(new DAL.Entities.QuestionEntity());
+            _context.SaveChanges();
+            return View(model);
+        }
+
+        public IActionResult ShowQuestions()
+        {
+            var questions = _context.Questions
+               .Include(x => x.Answers).ToList();
+
+            var questionsModel = questions.Select(x => new QuestionModel()
+            {
+                Id = x.Id,
+                Question = x.Question,
+                Answers = x.Answers.Select(ans => new AnswerModel()
+                {
+                    Answer = ans.Answer,
+                    IsCorrect = ans.IsCorrect,
+                    SelectedAnswers = ans.SelectedAnswer
+                }).ToList()
+            }).ToList();
+
+            return View(questionsModel);
         }
 
         public IActionResult Contact()

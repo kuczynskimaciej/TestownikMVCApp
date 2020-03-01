@@ -11,5 +11,6 @@ namespace DAL.Entities
         public string Answer { get; set; }
         public virtual QuestionEntity Question { get; set; }
         public bool IsCorrect { get; set; }
+        public bool SelectedAnswer { get; set; }
     }
 }
