@@ -1,10 +1,22 @@
-﻿
+﻿@model QuestionModel
 @{
     ViewData["Title"] = "AddQuestion";
 }
 
-<h2>AddQuestion</h2>
 
 <div>
-    
+    <form asp-controller="Home" asp-action="AddQuestion" FormMethod="post">
+        @{
+            <h1>
+                Dodaj pytanie:
+            </h1> 
+            <label>Id: </label> <br />
+            @Html.TextBoxFor(model => model.Id) <br />
+            <label>Pytanie: </label> <br />
+            @Html.TextBoxFor(model => model.Question) <br />
+            <label>Odpowiedzi: </label> <br />
+            @Html.TextBoxFor(model => model.Answers) <br />
+            <input type="submit" value="Dodaj" />
+        }
+    </form>
 </div>

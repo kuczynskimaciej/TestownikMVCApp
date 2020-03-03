@@ -26,83 +26,49 @@ namespace TestownikMVCApp.Controllers
 
         public IActionResult Testownik()
         {
-            //Random rnd = new Random();
-
-            //List<QuestionModel> _listOfQuestions = new List<QuestionModel>();
-            //QuestionModel question1 = new QuestionModel();
-            //question1.Question = "Ile to jest 2+2?";
-            //question1.Answers = new List<AnswerModel>();
-            //question1.Answers.Add(new AnswerModel() { Answer = "1", IsCorrect = false });
-            //question1.Answers.Add(new AnswerModel() { Answer = "2", IsCorrect = false });
-            //question1.Answers.Add(new AnswerModel() { Answer = "3", IsCorrect = false });
-            //question1.Answers.Add(new AnswerModel() { Answer = "4", IsCorrect = true });
-
-            //QuestionModel question2 = new QuestionModel();
-            //question2.Question = "Co idzie ze sobą w parze?";
-            //question2.Answers = new List<AnswerModel>();
-            //question2.Answers.Add(new AnswerModel() { Answer = "Wódka", IsCorrect = true });
-            //question2.Answers.Add(new AnswerModel() { Answer = "Zakąska", IsCorrect = true });
-            //question2.Answers.Add(new AnswerModel() { Answer = "3", IsCorrect = false });
-            //question2.Answers.Add(new AnswerModel() { Answer = "4", IsCorrect = false });
-
-            //QuestionModel question3 = new QuestionModel();
-            //question3.Question = "Ulubiony kolor?";
-            //question3.Answers = new List<AnswerModel>();
-            //question3.Answers.Add(new AnswerModel() { Answer = "Niebieski", IsCorrect = true });
-            //question3.Answers.Add(new AnswerModel() { Answer = "Czerwony", IsCorrect = false });
-            //question3.Answers.Add(new AnswerModel() { Answer = "Zielony", IsCorrect = false });
-            //question3.Answers.Add(new AnswerModel() { Answer = "Czarny", IsCorrect = false });
-
-            //_listOfQuestions.Add(question1);
-            //_listOfQuestions.Add(question2);
-            //_listOfQuestions.Add(question3);
-
-            //var countOfQuestions = _listOfQuestions.Count();
-            //var indexOfRandomQuestion = rnd.Next(countOfQuestions);
-            //var question = _listOfQuestions.ElementAt(indexOfRandomQuestion);
-
             Random rnd = new Random();
             var countOfQuestions = _context.Questions.Count();
             var indexOfRandomQuestion = rnd.Next(countOfQuestions);
-
-           
 
             var question = _context.Questions
                 .Include(x => x.Answers)
                 .Where(y => y.Id == indexOfRandomQuestion + 1).ToList().First();
 
-            
-
             var questionModel = new QuestionModel()
             {
                 Question = question.Question,
-                Answers = question.Answers.Select(x => new AnswerModel()
+                Answers = question.Answers.Select(ans => new AnswerModel()
                 {
-                    Answer = x.Answer,
-                    IsCorrect = x.IsCorrect,
-                    SelectedAnswers = x.SelectedAnswer
+                    Answer = ans.Answer,
+                    IsCorrect = ans.IsCorrect,
+                    SelectedAnswers = ans.SelectedAnswer
                 }).ToList()
             };
 
             return View(questionModel);
         }
+
         [HttpPost]
         public IActionResult CheckAnswers(QuestionModel model)
         {
 
             return View(model);
         }
-        public IActionResult AddAnswer()
+
+        public IActionResult AddQuestion()
         {
-
-
             return View();
         }
 
         [HttpPost]
-        public IActionResult AddQuestion(DAL.Entities.QuestionEntity model)
+        public IActionResult AddQuestion(QuestionModel model)
         {
-            _context.Questions.Add(new DAL.Entities.QuestionEntity());
+            var question = new DAL.Entities.QuestionEntity()
+            {
+                Question = model.Question
+            };
+
+            _context.Questions.Add(question);
             _context.SaveChanges();
             return View(model);
         }
@@ -112,11 +78,11 @@ namespace TestownikMVCApp.Controllers
             var questions = _context.Questions
                .Include(x => x.Answers).ToList();
 
-            var questionsModel = questions.Select(x => new QuestionModel()
+            var questionsModel = questions.Select(que => new QuestionModel()
             {
-                Id = x.Id,
-                Question = x.Question,
-                Answers = x.Answers.Select(ans => new AnswerModel()
+                Id = que.Id,
+                Question = que.Question,
+                Answers = que.Answers.Select(ans => new AnswerModel()
                 {
                     Answer = ans.Answer,
                     IsCorrect = ans.IsCorrect,
