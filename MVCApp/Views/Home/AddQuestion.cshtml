@@ -1,4 +1,4 @@
-﻿@model QuestionModel
+﻿@model AddQuestionModel
 @{
     ViewData["Title"] = "AddQuestion";
 }
@@ -9,12 +9,18 @@
         @{
             <h1>
                 Dodaj pytanie:
-            </h1> 
-            <label>Id: </label> <br />
-            @Html.TextBoxFor(model => model.Id) <br />
+            </h1>
             <label>Pytanie: </label> <br />
             @Html.TextBoxFor(model => model.Question) <br />
 
+            <label>Odpowiedzi: </label> <br />
+            @Html.TextBoxFor(model => model.Answers) <br />
+       
+            @Html.TextBoxFor(model => model.Answers) <br />
+           
+            @Html.TextBoxFor(model => model.Answers) <br />
+          
+            @Html.TextBoxFor(model => model.Answers) <br />
             <input type="submit" value="Dodaj" />
         }
     </form>

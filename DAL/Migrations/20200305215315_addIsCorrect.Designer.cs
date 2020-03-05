@@ -3,14 +3,16 @@ using DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL.Migrations
 {
     [DbContext(typeof(DALContext))]
-    partial class DALContextModelSnapshot : ModelSnapshot
+    [Migration("20200305215315_addIsCorrect")]
+    partial class addIsCorrect
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,6 +53,8 @@ namespace DAL.Migrations
                     b.Property<int>("AnswerId");
 
                     b.Property<int>("QuestionId");
+
+                    b.Property<bool>("IsCorrect");
 
                     b.HasKey("AnswerId", "QuestionId");
 

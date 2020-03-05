@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using TestownikMVCApp.Models;
 using DAL;
 using Microsoft.EntityFrameworkCore;
+using DAL.Relations;
 
 namespace TestownikMVCApp.Controllers
 {
@@ -31,17 +32,16 @@ namespace TestownikMVCApp.Controllers
             var indexOfRandomQuestion = rnd.Next(countOfQuestions);
 
             var question = _context.Questions
-                .Include(x => x.Answers)
+                .Include("QuestionAnswers.Answer")
                 .Where(y => y.Id == indexOfRandomQuestion + 1).ToList().First();
 
             var questionModel = new QuestionModel()
             {
                 Question = question.Question,
-                Answers = question.Answers.Select(ans => new AnswerModel()
+                Answers = question.QuestionAnswers.Select(x => x.Answer).Select(ans => new AnswerModel()
                 {
                     Answer = ans.Answer,
-                    IsCorrect = ans.IsCorrect,
-                    SelectedAnswers = ans.SelectedAnswer
+                    IsCorrect = ans.IsCorrect
                 }).ToList()
             };
 
@@ -61,33 +61,67 @@ namespace TestownikMVCApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddQuestion(QuestionModel model)
+        public IActionResult AddQuestion(AddQuestionModel model)
         {
-            var question = new DAL.Entities.QuestionEntity()
+            var question = new DAL.Entities.QuestionEntity
             {
                 Question = model.Question
+
             };
 
+            List<int> addedAns = new List<int>();
+            
+            foreach(var ans in model.Answers)
+            {
+
+                var answer = new DAL.Entities.AnswerEntity
+                {
+                    Answer = ans
+                };
+                _context.Answers.Add(answer);
+                _context.SaveChanges();
+                addedAns.Add(answer.Id);
+            }
+
+
             _context.Questions.Add(question);
+
             _context.SaveChanges();
+
+            foreach (var ans in addedAns)
+            {
+                _context.QuestionAnswers.Add(new QuestionAnswers()
+                {
+                    QuestionId = question.Id,
+                    AnswerId = ans
+                });
+
+                _context.SaveChanges();
+            }
+  
+
             return View(model);
         }
 
         public IActionResult ShowQuestions()
         {
             var questions = _context.Questions
-               .Include(x => x.Answers).ToList();
+               .Include("QuestionAnswers.Answer").ToList();
 
-            var questionsModel = questions.Select(que => new QuestionModel()
+            var questionsModel = questions.Select(que =>
             {
-                Id = que.Id,
-                Question = que.Question,
-                Answers = que.Answers.Select(ans => new AnswerModel()
+                var a = que.QuestionAnswers.Select(y => y.Answer);
+                return new QuestionModel()
                 {
-                    Answer = ans.Answer,
-                    IsCorrect = ans.IsCorrect,
-                    SelectedAnswers = ans.SelectedAnswer
-                }).ToList()
+                    Id = que.Id,
+                    Question = que.Question,
+                    Answers = a != null && a.Any() ? a.Select(ans => new AnswerModel()
+                    {
+                        Answer = ans.Answer,
+                        IsCorrect = ans.IsCorrect,
+
+                    }).ToList() : new List<AnswerModel>()
+                };
             }).ToList();
 
             return View(questionsModel);
