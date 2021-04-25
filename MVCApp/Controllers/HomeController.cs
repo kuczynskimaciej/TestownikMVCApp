@@ -33,7 +33,7 @@ namespace TestownikMVCApp.Controllers
 
             var question = _context.Questions
                 .Include("QuestionAnswers.Answer")
-                .Where(y => y.Id == indexOfRandomQuestion + 1).ToList().First();
+                .Where(y => y.Id == 1).ToList().First();
 
             var questionModel = new QuestionModel()
             {
